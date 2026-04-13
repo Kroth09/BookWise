@@ -3,6 +3,4 @@
 //Models
 require 'dados.php';
 
-$view = 'index';
-
-require 'views/templates/app.php';
+view('index', compact('livros'));
