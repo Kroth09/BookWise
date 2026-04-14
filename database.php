@@ -7,53 +7,18 @@ class DB
         $this->db = new PDO('sqlite:database.sqlite');
     }
 
+    public function query($query, $class = null, $params = []){
+        $prepare = $this->db->prepare($query);
 
-    /**
-     * Retorna todos os livros do Banco de Dados
-     *
-     * @return array[Livro]
-     */
-
-
-    public function livros(){
-
-        $query = $this->db->query('SELECT * FROM livros');
-        $itens = $query->fetchAll();
-        $retorno = [];
-        foreach($itens as $itens){
-            $livro = new Livro;
-            $livro->id = $itens['id'];
-            $livro->titulo = $itens['titulo'];
-            $livro->autor = $itens['autor'];
-            $livro->descricao = $itens['descricao'];
-
-            $retorno[] = $livro;
+        if($class){
+            $prepare->setFetchMode(PDO::FETCH_CLASS, $class);
         }
 
-        return $retorno;
+        $prepare->execute($params);
+
+        return $prepare;
     }
 
-public function livro($id){
-
-    $db = new PDO('sqlite:database.sqlite');
-    $sql = "select * from livros";
-    $sql .= " where id = " . $id;
-
-    $query = $this->db->query($sql);
-    $itens = $query->fetchAll();
-    $retorno = [];
-    foreach($itens as $itens){
-        $livro = new Livro;
-        $livro->id = $itens['id'];
-        $livro->titulo = $itens['titulo'];
-        $livro->autor = $itens['autor'];
-        $livro->descricao = $itens['descricao'];
-
-        $retorno[] = $livro;
-    }
-
-    return $retorno[0];
-}
 
 
 }
