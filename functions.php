@@ -7,6 +7,11 @@ function view($view, $data = null){
     require "views/templates/app.php";
 }
 
+function dump($value) {
+    echo '<pre style="background:#111; color:#0f0; padding:10px;">';
+    print_r($value);
+    echo '</pre>';
+}
 
 function dd (...$dump)
 {
