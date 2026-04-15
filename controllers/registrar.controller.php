@@ -1,43 +1,22 @@
 <?php
 
-$_SESSION['teste'] = '';
-header('location: /login');
-exit();
+require 'Validacao.php';
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $validacoes = [];
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $email_confirmacao = $_POST['email-confirmacao'];
-    $senha = $_POST['senha'];
+    $validacao = Validacao::validar([
+        'nome' => ['required'],
+        'email' => ['required', 'email', 'confirmed'],
+        'senha' => ['required', 'min:8', 'max:16', 'strong'],
 
-    //Nome deve ser obrigatório!
-    if(strlen($nome) === 0){
-        $validacoes[] = "O nome é obrigatório.";
-    }
+    ], $_POST);
 
-    if(strlen($email) === 0){
-        $validacoes[] = "O email é obrigatório.";
-    }
-
-    if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-        $validacoes[] = "Obrigatório usar um email valido.";
-    }
-
-    if($email !== $email_confirmacao){
-        $validacoes[] = "Emails diferentes.";
-    }
-
-    if(strlen($senha) < 8 || strlen($senha) > 16){
-        $validacoes[]= "A senha precisa ter entre 8 e 16 caracteres.";
-    }
-
-    if(sizeof($validacoes) > 0){
-        $_SESSION['teste'] = '';
+    if (!empty($validacao->naoPassou())) {
+        $_SESSION['validacoes'] = $validacao->validacoes;
         header('location: /login');
         exit();
     }
+
 
     $resultado = $DB->query(query: "insert into USUARIOS (nome, email, senha) values(:nome, :email , :senha)", params: [
         'nome' => $_POST['nome'],

@@ -44,12 +44,12 @@
                 </div>
             <?php endif; ?>
 
-            <?php if (isset($validacoes) && sizeof($validacoes)): ?>
+            <?php if (isset($_SESSION['validacoes']) && sizeof($_SESSION['validacoes'])): ?>
                 <div class="border-red-800 bg-red-900 text-red-400 px-4 py-1 rounded-md border-2 text-sm font-bold">
                     <ul>
                         <li>Erros de validações</li>
 
-                        <?php foreach ($validacoes as $validacao): ?>
+                        <?php foreach ($_SESSION['validacoes'] as $validacao): ?>
                             <li><?= $validacao ?> </li>
                         <?php endforeach; ?>
                     </ul>
@@ -82,7 +82,7 @@
                 <input
                         type="text"
 
-                        name="email-confirmacao"
+                        name="email_confirmacao"
 
                         class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1 w-full"
 
