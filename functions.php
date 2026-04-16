@@ -15,7 +15,7 @@ function dump($value) {
 
 function dd (...$dump)
 {
-    echo '<pre>';
+    echo '<pre style="background:#111; color:#0f0; padding:10px;">';
     var_dump($dump);
     echo '</pre>';
     die();
@@ -25,4 +25,8 @@ function abort($code){
     http_response_code($code);
     view($code);
     die();
+}
+
+function flash(){
+    return new Flash;
 }

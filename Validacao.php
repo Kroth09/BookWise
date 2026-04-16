@@ -71,12 +71,23 @@ class Validacao
     }
 
     private function max($max, $campo, $valor){
-        if(strlen($valor) >= $max){
-            $this->validacoes[] = "O $campo precisa ter no mínimo $max caracteres.";
+        if(strlen($valor) > $max){
+            $this->validacoes[] = "O $campo precisa ter no máximo $max caracteres.";
+        }
+    }
+
+    private function strong( $campo, $valor){
+        if(!strpbrk($valor, "*!@#$%&()?|/:;=+-_''.")){
+            $this->validacoes[] = "O $campo precisa ter um *.";
         }
     }
 
     public function naoPassou(){
+        //adicionar valor
+        flash()->push('validacoes', $this->validacoes);
+
+
+
         return !empty($this->validacoes);
     }
 

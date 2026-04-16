@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ], $_POST);
 
     if (!empty($validacao->naoPassou())) {
-        $_SESSION['validacoes'] = $validacao->validacoes;
         header('location: /login');
         exit();
     }

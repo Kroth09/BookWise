@@ -24,12 +24,24 @@
         </ul>
 
         <ul>
-            <li><a href="/login">Fazer Login</a></li>
+            <?php
+
+            if (isset($_SESSION['auth'])): ?>
+                <li><a href="/logout" class="hover:underline">Oi, <?=$_SESSION['auth']->nome ?></a></li>
+            <?php else: ?>
+                    <li><a href="/login" class="hover:underline">Fazer Login</a></li>
+                <?php endif ?>
         </ul>
 
     </nav>
 
 </header>
+
+<?php if($mensagem = flash()->get('mensagem')) : ?>
+        <div class="border-green-800 -bg-green-900 text-green-499 px-4 py-1 rounded-md border-2 text-sm font-bold">
+            <?=mensagem?>
+        </div>
+    <?php endif; ?>
 
 <main class="mx-auto max-w-screen-lg space-y-6">
 
