@@ -3,7 +3,7 @@
 
 // 1 - Receber o formulário com email e senha
 
-dump($_SESSION);
+//dump($_SESSION);
 
 
 
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'senha' => ['required'],
     ], $_POST);
 
-    if (!empty($validacao->naoPassou())) {
+    if ($validacao->naoPassou('login')) {
         header('location: /login');
         exit();
     }
@@ -26,20 +26,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // email e senha
 
     $usuario = $DB->query(
-        query: " SELECT * FROM USUARIOS WHERE email = :email AND senha = :senha",
+        query: " SELECT * FROM USUARIOS WHERE email = :email",
         class: Usuario::class,
-        params: compact('email', 'senha')
-    )
-        ->fetch();
+        params: compact('email', )
+    )->fetch();
 
-    if ($usuario) {
+
+    if (!$usuario) {
+
+        flash()->push('validacoes_login',['Usuário ou senha não encontrados']);
+        header('location: /login');
+        exit();
+
+
         $_SESSION['auth'] = $usuario;
         flash()->push('mensagem', 'Logado com sucesso!');
-        $_SESSION['mensagem'] = "Seja bem vindo " . $usuario->nome . "!";
+//        $_SESSION['mensagem'] = "Seja bem vindo " . $usuario->nome . "!";
         header('location: /');
         exit();
 
     }
+
+    $senhaDoPost = $_POST['senha'];
+    $senhaDoBanco = $usuario->senha;
+
+
+    if (! password_verify($senhaDoPost, $senhaDoBanco)){
+        flash()->push('validacoes_login',['Usuário ou senha não encontrados']);
+        header('location: /login');
+        exit();
+    }
+
+    $_SESSION['auth'] = $usuario;
+
+    flash()->push('mensagem', 'Logado com sucesso!');
+
+    header('location: /');
+    exit();
+
 
 // 3- Se existir, adicionar na sessão que o usuário está autenticado
 

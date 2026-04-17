@@ -8,4 +8,5 @@ require 'Flash.php';
 require 'functions.php';
 $config = require 'config.php';
 require 'Database.php';
+require 'Validacao.php';
 require 'routes.php';

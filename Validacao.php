@@ -42,6 +42,24 @@ class Validacao
 
         }
     }
+
+    private function unique($table, $campo, $valor)
+    {
+        if(strlen($valor) == 0) {
+            return;
+        }
+
+        $DB = new DB(config('database'));
+
+        $resultado = $DB->query(
+        query: "select * from USUARIOS where $campo = :valor",
+        params: ['valor' => $valor ])->fetch();
+
+        if($resultado){
+            $this->validacoes[] = "O $campo já existe.";
+        }
+
+    }
     private function email($campo, $valor){
 
         if (! filter_var($valor, FILTER_VALIDATE_EMAIL)) {
@@ -78,17 +96,25 @@ class Validacao
 
     private function strong( $campo, $valor){
         if(!strpbrk($valor, "*!@#$%&()?|/:;=+-_''.")){
-            $this->validacoes[] = "O $campo precisa ter um *.";
+            $this->validacoes[] = "A $campo precisa ter um caractere especial.";
         }
     }
 
-    public function naoPassou(){
-        //adicionar valor
-        flash()->push('validacoes', $this->validacoes);
+    public function naoPassou($nomeCustomizado = null){
+        $chave = 'validacoes';
+        if($nomeCustomizado){
+            $chave .= '_'. $nomeCustomizado;
+        }
+
+
+        flash()->push($chave, $this->validacoes);
 
 
 
         return !empty($this->validacoes);
     }
+
+
+
 
 }
