@@ -1,7 +1,7 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-    header("location /");
+    header("location: /");
     exit();
 }
 
@@ -11,12 +11,23 @@ $avaliacao = $_POST['avaliacao'];
 $nota = $_POST['nota'];
 
 
-$database->query(
+$validacao = Validacao::validar([
+    'avaliacao' => ['required'],
+    'nota' => ['required'],
+], $_POST);
+
+if ($validacao->naoPassou()) {
+    header("location: /livro?id=".$livro_id);
+    exit();
+}
+
+
+$DB->query(
     "INSERT INTO avaliacoes ( usuario_id, livro_id, avaliacao, nota)
      values( :usuario_id, :livro_id, :avaliacao, :nota);",
     params: compact("usuario_id", "livro_id", "avaliacao", "nota"));
 
 
 flash()->push('mensagem', 'Avaliação feita com sucesso!');
-header("location /livro?id=."$livro_id);
+header("location: /livro?id=".$livro_id);
 exit();
