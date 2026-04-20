@@ -1,7 +1,12 @@
-<h1>Meus Livros</h1>
+<h1 class="mt-6 font-bold text-lg">Meus Livros</h1>
 
 <div class="grid grid-cols-4 gap-4">
-    <div class="col-span-3 gap-4 grip">
+    <div class="col-span-3 flex flex-col gap-4 ">
+
+        <?php foreach ($livros as $livro): {
+            require 'partials/_livro.php';
+        }?>
+
     </div>
 
     <div>
