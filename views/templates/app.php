@@ -44,7 +44,7 @@
 
 <main class="mx-auto max-w-screen-lg space-y-6">
 
-    <?php require "views/{$view}.view.php" ?>
+    <?php require "../views/{$view}.view.php" ?>
 
 </main>
 

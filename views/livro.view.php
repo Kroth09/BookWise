@@ -47,7 +47,6 @@
                 <?php endif; ?>
 
 
-
                 <div class="flex flex-col">
                     <input name="livro_id" value="<?= $livro->id ?>" type="hidden">
 
